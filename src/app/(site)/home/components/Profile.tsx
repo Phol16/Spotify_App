@@ -27,7 +27,7 @@ const Profile = () => {
       {
         icon: HiHome,
         label: 'Home',
-        active: pathname !== '/search',
+        active: pathname === '/home',
         href: '/home',
       },
       {

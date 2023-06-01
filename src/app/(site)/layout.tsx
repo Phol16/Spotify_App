@@ -1,11 +1,11 @@
 import '../globals.css';
-import { Roboto } from 'next/font/google';
+import { Varela_Round } from 'next/font/google';
 
 import Providers from '@/components/Providers';
 import Navbar from '@/components/Navbar';
 import { Providers as RTKProvider } from '@/libs/store/Provider';
 
-const font = Roboto({ weight: ['100', '300', '400', '500', '700'], subsets: ['latin'] });
+const font = Varela_Round({ weight: ['400'], subsets: ['latin'] });
 
 export const metadata = {
   title: 'Spotify App',

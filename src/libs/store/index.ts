@@ -1,7 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 
+import followedArtist from './slice/followedArtistSlice'
+
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    artist: followedArtist,
+  },
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

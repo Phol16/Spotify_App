@@ -1,10 +1,16 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useCallback, useEffect, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import { HiHome } from 'react-icons/hi';
 import { RxCaretLeft, RxCaretRight } from 'react-icons/rx';
 import { shuffle } from 'lodash';
+
+import { useSelector } from 'react-redux';
+import type { RootState } from '@/libs/store';
+
+import useSpotify from '@/hooks/useSpotify';
+import Image from 'next/image';
 
 interface HeaderProps {
   children: ReactNode;
@@ -23,12 +29,30 @@ export const colors: string[] = [
 ];
 
 const Header = ({ children }: HeaderProps) => {
-  const router = useRouter();
   const [color, setColor] = useState('');
+  const [artistDetail, setArtistDetail] = useState<{} | null>(null);
+
+  const router = useRouter();
+  const spotifyApi = useSpotify();
+  const pathname = usePathname();
+
+  const artist = useSelector((state: RootState) => state.artist.value);
 
   useEffect(() => {
     setColor(shuffle(colors).pop()!);
-  }, []);
+  }, [artist, spotifyApi]);
+
+  useEffect(() => {
+    if (artist) {
+      spotifyApi.getArtist(artist).then((data) => {
+        if (pathname === '/home') {
+          setArtistDetail(null);
+        } else {
+          setArtistDetail(data.body);
+        }
+      });
+    }
+  }, [artist, pathname]);
 
   return (
     <header className={`h-fit bg-gradient-to-b ${color} p-6`}>
@@ -36,7 +60,7 @@ const Header = ({ children }: HeaderProps) => {
         <div className='hidden md:flex gap-x-2 items-center'>
           <button
             onClick={() => {
-              router.back();
+              // router.back();
             }}
             className='rounded-full bg-black flex items-center hover:opacity-75 transition'
           >
@@ -44,7 +68,7 @@ const Header = ({ children }: HeaderProps) => {
           </button>
           <button
             onClick={() => {
-              router.forward();
+              // router.forward();
             }}
             className='rounded-full bg-black flex items-center hover:opacity-75 transition'
           >
@@ -56,6 +80,32 @@ const Header = ({ children }: HeaderProps) => {
             <HiHome size={20} className='text-black' />
           </button>
         </div>
+      </div>
+      <div className='px-2 py-4'>
+        {artistDetail ? (
+          <div className='flex items-center gap-x-3'>
+            <Image
+              src={artistDetail?.images?.[1].url}
+              alt='Artist Image'
+              width={130}
+              height={0}
+              className='max-h-[130px] object-cover object-center rounded-lg'
+            />
+            <section className='flex flex-col gap-2'>
+              <h1 className='text-4xl'>{artistDetail?.name}</h1>
+              <div className='px-2'>
+                <p className='text-xs text-neutral-400'>
+                  {artistDetail?.type[0].toUpperCase() + artistDetail.type.substring(1)}
+                </p>
+                <p className='text-sm text-neutral-400'>
+                  Followers: {artistDetail?.followers.total}
+                </p>
+              </div>
+            </section>
+          </div>
+        ) : (
+          <h1 className='text-lg font-semibold'>Spotify App</h1>
+        )}
       </div>
     </header>
   );
