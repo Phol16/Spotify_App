@@ -6,11 +6,13 @@ import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import { BiSearch } from 'react-icons/bi';
 import { HiHome } from 'react-icons/hi';
+
 import ProfileSidebarItem from './ProfileSidebarItem';
 import Loading from '@/components/Loading';
 
 const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
+  
   const { data: session } = useSession();
   const pathname = usePathname();
 
