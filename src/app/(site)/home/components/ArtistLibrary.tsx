@@ -1,13 +1,12 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
-import { shuffle } from 'lodash';
-
-import { useDispatch } from 'react-redux';
-import { storefollowedArtist } from '@/libs/store/slice/followedArtistSlice';
 import useSpotify from '@/hooks/useSpotify';
 import Loading from '@/components/Loading';
 import { useRouter } from 'next/navigation';
+
+import { useDispatch } from 'react-redux';
+import { storefollowedArtist } from '@/libs/store/slice/followedArtistSlice';
 
 const ArtistLibrary = () => {
   const [followedArtist, setfollowedArtist] = useState([]);

@@ -1,45 +1,51 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { BsFillPlayFill,BsPauseFill,BsStopFill } from 'react-icons/bs'
 
 import useSpotify from '@/hooks/useSpotify';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '@/libs/store';
+import { storeSelectedTrack } from '@/libs/store/slice/selectedTrackSlice';
+import PreviewTrack from './components/PreviewTrack';
+import Album from './components/Album';
 
 const ArtistDetails = () => {
   const [topTracks, setTopTracks] = useState([]);
-  const audio = useRef(null);
 
   const pathname = usePathname();
   const spotifyApi = useSpotify();
   const artist = useSelector((state: RootState) => state.artist.value);
 
-  if (pathname === `/home/artist/${artist}/album`) {
-    return (
-      <div className='flex justify-center items-center h-full'> Not yet developed </div>
-    );
-  }
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    spotifyApi.getArtistTopTracks(artist, 'ES').then((data) => {
-      if (artist) {
+    if (artist) {
+      spotifyApi.getArtistTopTracks(artist, 'ES').then((data) => {
         //@ts-ignore
         setTopTracks(data.body.tracks);
-      }
-    });
+      });
+    }
   }, [artist, spotifyApi]);
-  console.log(topTracks);
+
+  if (pathname === `/home/artist/${artist}/album`) {
+    return (
+      <Album info={artist}/>
+    );
+  }
 
   return (
     <div className='flex flex-col gap-4'>
       {topTracks.map((track, index) => (
+        <div className='flex items-center gap-x-3'>
         <div
           key={track?.id}
-          className='flex items-center p-2 hover:bg-neutral-400 hover:bg-opacity-10 rounded-lg cursor-pointer'
+          onClick={() => {
+            dispatch(storeSelectedTrack(track?.id));
+          }}
+          className='flex-[1] flex items-center p-2 hover:bg-neutral-400 hover:bg-opacity-10 rounded-lg cursor-pointer'
         >
           <p className='flex-[0.1]'>{index + 1}</p>
           <section className='flex gap-x-2 flex-[3]'>
@@ -58,23 +64,8 @@ const ArtistDetails = () => {
               </p>
             </div>
           </section>
-          {track?.preview_url && (
-            <div>
-              <p className='text-xs text-neutral-400 text-center'>Preview</p>
-              <audio
-                ref={audio}
-                controls
-                controlsList='nodownload noplaybackrate'
-                src={track?.preview_url}
-                className='hidden'
-              />
-              <div className='flex gap-2'>
-              <button onClick={()=>{audio.current.play()}}><BsFillPlayFill/></button>
-              <button onClick={()=>{audio.current.pause()}}><BsPauseFill/></button>
-              <button onClick={()=>{audio.current.pause(), audio.current.currentTime = 0}}><BsStopFill/></button>
-              </div>
-            </div>
-          )}
+        </div>
+        {track?.preview_url && <PreviewTrack url={track?.preview_url} />}
         </div>
       ))}
     </div>

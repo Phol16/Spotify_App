@@ -11,6 +11,7 @@ import type { RootState } from '@/libs/store';
 
 import useSpotify from '@/hooks/useSpotify';
 import Image from 'next/image';
+import PlayTrack from './PlayTrack';
 
 interface HeaderProps {
   children: ReactNode;
@@ -79,6 +80,9 @@ const Header = ({ children }: HeaderProps) => {
           <button className='rounded-full p-2 bg-white flex items-center justify-center hover:opacity-75 transition'>
             <HiHome size={20} className='text-black' />
           </button>
+        </div>
+        <div>
+          <PlayTrack/>
         </div>
       </div>
       <div className='px-2 py-4'>

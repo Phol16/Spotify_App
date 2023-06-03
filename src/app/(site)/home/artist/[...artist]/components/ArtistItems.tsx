@@ -1,8 +1,6 @@
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
-import Image from 'next/image';
-import { useSession } from 'next-auth/react';
+import React, { useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import { MdAlbum, MdAudiotrack } from 'react-icons/md';
 
