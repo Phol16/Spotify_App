@@ -6,6 +6,14 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'i.scdn.co',
       },
+      {
+        protocol: 'https',
+        hostname: 'charts-images.scdn.co',
+      },
+      {
+        protocol: 'https',
+        hostname: 'mixed-media-images.spotifycdn.com',
+      },
     ],
   },
 }

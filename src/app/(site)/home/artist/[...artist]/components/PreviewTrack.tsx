@@ -2,9 +2,10 @@ import React, { useRef, useState } from 'react';
 
 import { BsFillPlayFill, BsPauseFill, BsStopFill } from 'react-icons/bs';
 
+
 const PreviewTrack = ({ url }: { url: string }) => {
   const [playstate, setPlayState] = useState(false);
-  const audio = useRef(null);
+  const audio = useRef<any>(null);
 
   return (
       <div className='bg-neutral-700 p-2 rounded-lg bg-opacity-20'>
@@ -20,8 +21,8 @@ const PreviewTrack = ({ url }: { url: string }) => {
           {!playstate && (
             <button
               onClick={() => {
-                audio.current.play();
-                audio.current.volume = 0.2;
+                audio.current!.play();
+                audio.current!.volume = 0.4;
                 setPlayState(true);
               }}
             >
@@ -31,7 +32,7 @@ const PreviewTrack = ({ url }: { url: string }) => {
           {playstate && (
             <button
               onClick={() => {
-                audio.current.pause();
+                audio.current!.pause();
                 setPlayState(false);
               }}
             >
@@ -40,8 +41,8 @@ const PreviewTrack = ({ url }: { url: string }) => {
           )}
           <button
             onClick={() => {
-              audio.current.pause();
-              audio.current.currentTime = 0;
+              audio.current!.pause();
+              audio.current!.currentTime = 0;
               setPlayState(false);
             }}
           >

@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { storefollowedArtist } from '@/libs/store/slice/followedArtistSlice';
 
 const ArtistLibrary = () => {
-  const [followedArtist, setfollowedArtist] = useState([]);
+  const [followedArtist, setfollowedArtist] = useState<Record<any,any>[]>([]);
 
   const { data: session, status } = useSession();
   const spotifyApi = useSpotify();

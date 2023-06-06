@@ -41,7 +41,7 @@ const Header = ({ children }: HeaderProps) => {
 
   useEffect(() => {
     setColor(shuffle(colors).pop()!);
-  }, [artist, spotifyApi]);
+  }, [spotifyApi,pathname]);
 
   useEffect(() => {
     if (artist) {
@@ -82,13 +82,14 @@ const Header = ({ children }: HeaderProps) => {
           </button>
         </div>
         <div>
-          <PlayTrack/>
+          <PlayTrack />
         </div>
       </div>
       <div className='px-2 py-4'>
         {artistDetail ? (
           <div className='flex items-center gap-x-3'>
             <Image
+              //@ts-ignore
               src={artistDetail?.images?.[1].url}
               alt='Artist Image'
               width={130}
@@ -96,12 +97,15 @@ const Header = ({ children }: HeaderProps) => {
               className='max-h-[130px] object-cover object-center rounded-lg'
             />
             <section className='flex flex-col gap-2'>
+              {/*@ts-ignore*/}
               <h1 className='text-4xl'>{artistDetail?.name}</h1>
               <div className='px-2'>
                 <p className='text-xs text-neutral-400'>
+                  {/*@ts-ignore*/}
                   {artistDetail?.type[0].toUpperCase() + artistDetail.type.substring(1)}
                 </p>
                 <p className='text-sm text-neutral-400'>
+                  {/*@ts-ignore*/}
                   Followers: {artistDetail?.followers.total}
                 </p>
               </div>
