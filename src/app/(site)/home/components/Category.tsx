@@ -1,8 +1,12 @@
 import useSpotify from '@/hooks/useSpotify';
 import clsx from 'clsx';
 import Image from 'next/image';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaPlay } from 'react-icons/fa';
+
+import { useDispatch } from 'react-redux';
+import { storedashboardTrack } from '@/libs/store/slice/dashboardTrackSlice';
+import { useRouter } from 'next/navigation';
 
 interface CategoryProps {
   href: string;
@@ -11,9 +15,12 @@ interface CategoryProps {
   name: string;
 }
 export const CategoryItem = ({ id }: { id: string }) => {
-  const [categoryPlaylist, setCategoryPLaylist] = useState<Record<any,any>[]>();
+  const [categoryPlaylist, setCategoryPLaylist] = useState<Record<any, any>[]>();
   const [hidden, setHidden] = useState(null);
+  const router = useRouter();
+
   const spotifyApi = useSpotify();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     spotifyApi
@@ -22,9 +29,9 @@ export const CategoryItem = ({ id }: { id: string }) => {
         setCategoryPLaylist(data?.body?.playlists?.items);
       })
       .catch((error) => {
-        console.log('Something went wrong');
+        console.log('Something went wrong @ category', error);
       });
-  }, [spotifyApi, categoryPlaylist]);
+  }, [spotifyApi]);
 
   return (
     <div className='flex gap-2 overflow-x-auto scrollbar-hide '>
@@ -32,6 +39,10 @@ export const CategoryItem = ({ id }: { id: string }) => {
         categoryPlaylist.map((data, index) => (
           <div
             key={data.id + index}
+            onClick={() => {
+              dispatch(storedashboardTrack(data.id));
+              router.push('/home/music');
+            }}
             onMouseOver={() => {
               //@ts-ignore
               setHidden(index);

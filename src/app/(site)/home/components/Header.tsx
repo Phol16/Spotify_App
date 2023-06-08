@@ -6,8 +6,10 @@ import { HiHome } from 'react-icons/hi';
 import { RxCaretLeft, RxCaretRight } from 'react-icons/rx';
 import { shuffle } from 'lodash';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '@/libs/store';
+import { storedashboardTrack } from '@/libs/store/slice/dashboardTrackSlice';
+import { storefollowedArtist } from '@/libs/store/slice/followedArtistSlice';
 
 import useSpotify from '@/hooks/useSpotify';
 import Image from 'next/image';
@@ -37,23 +39,43 @@ const Header = ({ children }: HeaderProps) => {
   const spotifyApi = useSpotify();
   const pathname = usePathname();
 
-  const artist = useSelector((state: RootState) => state.artist.value);
+  let artist = useSelector((state: RootState) => state.artist.value);
+  let musicList = useSelector((state: RootState) => state.dashboardTrack.value);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setColor(shuffle(colors).pop()!);
-  }, [spotifyApi,pathname]);
+  }, [spotifyApi, pathname]);
 
   useEffect(() => {
-    if (artist) {
-      spotifyApi.getArtist(artist).then((data) => {
-        if (pathname === '/home') {
-          setArtistDetail(null);
-        } else {
-          setArtistDetail(data.body);
-        }
-      });
+    if (pathname === '/home') {
+      setArtistDetail(null);
+      dispatch(storedashboardTrack(null));
+      dispatch(storefollowedArtist(null));
+    } else {
+      if (artist) {
+        musicList = ''
+        spotifyApi.getArtist(artist).then((data) => {
+          if (pathname === `/home/artist/${artist}` || pathname === `/home/artist/${artist}/album`) {
+            setArtistDetail(data.body);
+          } else {
+            setArtistDetail(null);
+          }
+        });
+      }
+      if (musicList) {
+        artist = ''
+        spotifyApi.getPlaylist(musicList).then((data) => {
+          if (pathname === '/home/music') {
+            setArtistDetail(data.body);
+          } else {
+            setArtistDetail(null);
+            dispatch(storedashboardTrack(null));
+          }
+        });
+      }
     }
-  }, [artist, pathname]);
+  }, [pathname]);
 
   return (
     <header className={`h-fit bg-gradient-to-b ${color} p-6`}>
@@ -90,7 +112,7 @@ const Header = ({ children }: HeaderProps) => {
           <div className='flex items-center gap-x-3'>
             <Image
               //@ts-ignore
-              src={artistDetail?.images?.[1].url}
+              src={artistDetail?.images?.[0].url}
               alt='Artist Image'
               width={130}
               height={0}

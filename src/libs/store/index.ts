@@ -2,11 +2,13 @@ import { configureStore } from '@reduxjs/toolkit'
 
 import followedArtist from './slice/followedArtistSlice'
 import selectedTrack from './slice/selectedTrackSlice'
+import dashboardTrack from './slice/dashboardTrackSlice'
 
 export const store = configureStore({
   reducer: {
     artist: followedArtist,
     track: selectedTrack,
+    dashboardTrack: dashboardTrack
   },
 })
 
