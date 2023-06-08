@@ -7,7 +7,7 @@ import Loading from '@/components/Loading';
 import { useSession } from 'next-auth/react';
 
 const Categories = () => {
-  const [categories, setCategories] = useState<Record<any,any>[]>([]);
+  const [categories, setCategories] = useState<Record<any, any>[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const spotifyApi = useSpotify();

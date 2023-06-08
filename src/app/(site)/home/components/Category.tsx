@@ -81,7 +81,7 @@ export const CategoryItem = ({ id }: { id: string }) => {
 
 const Category = ({ data }: { data: CategoryProps }) => {
   return (
-    <div className=''>
+    <div>
       <h1 className='text-xl font-semibold'>{data.name}</h1>
       <section className='overflow-hidden p-2 relative'>
         <CategoryItem id={data.id} />

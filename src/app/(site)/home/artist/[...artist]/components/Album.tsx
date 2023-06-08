@@ -5,7 +5,7 @@ const Album = ({info}:{info:string}) => {
   const spotifyApi = useSpotify();
 
   return (
-    <div className='flex justify-center items-center h-full'> Not yet developed </div>
+    <div className='flex justify-center items-center h-[calc(100dvh_-_330px)]'> Not yet developed </div>
   )
 }
 

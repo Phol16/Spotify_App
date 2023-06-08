@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { storefollowedArtist } from '@/libs/store/slice/followedArtistSlice';
 
 const ArtistLibrary = () => {
-  const [followedArtist, setfollowedArtist] = useState<Record<any,any>[]>([]);
+  const [followedArtist, setfollowedArtist] = useState<Record<any, any>[]>([]);
 
   const { data: session, status } = useSession();
   const spotifyApi = useSpotify();
@@ -26,7 +26,7 @@ const ArtistLibrary = () => {
   }, [session, spotifyApi]);
 
   return (
-    <div className=' flex flex-col gap-2 h-[calc(100dvh_-_370px)] overflow-y-auto scrollbar-hide border-b-[1px] border-neutral-700 py-1'>
+    <div className=' flex flex-col gap-2 h-[calc(100dvh_-_330px)] overflow-y-auto scrollbar-hide border-b-[1px] border-neutral-700 py-1'>
       {followedArtist.length ? (
         followedArtist.map((followedArtist) => (
           <div

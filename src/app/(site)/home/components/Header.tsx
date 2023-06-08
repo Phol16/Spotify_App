@@ -35,7 +35,6 @@ const Header = ({ children }: HeaderProps) => {
   const [color, setColor] = useState('');
   const [artistDetail, setArtistDetail] = useState<{} | null>(null);
 
-  const router = useRouter();
   const spotifyApi = useSpotify();
   const pathname = usePathname();
 

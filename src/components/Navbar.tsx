@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 import { FaSpotify } from 'react-icons/fa';
 import { signOut, useSession } from 'next-auth/react';
-import { AiFillSetting } from 'react-icons/ai';
+import { BiLogOut } from 'react-icons/bi';
 import Lottie from 'lottie-react';
 
 import robot from '../../public/assets/lightRobot.json';
@@ -28,11 +28,20 @@ const Navbar = () => {
 
   return (
     <div className='fixed py-2 px-8 bg-transparent w-full flex justify-between items-center'>
-      <FaSpotify size={32} className='text-green-500' />
+      <FaSpotify
+        size={32}
+        className={`text-green-500 ${
+          session.status === 'authenticated' ? 'hidden' : null
+        }`}
+      />
       {session && session.data?.user ? (
-        <div className='flex items-center gap-5'>
+        <div
+          className={`flex items-center gap-5 ${
+            session.status === 'authenticated' ? 'absolute right-8 top-8' : null
+          }`}
+        >
           <Button secondary onClick={handleSettings}>
-            <AiFillSetting size={28} />
+            <BiLogOut size={28} className=' drop-shadow-sm shadow-black'/>
           </Button>
         </div>
       ) : (
