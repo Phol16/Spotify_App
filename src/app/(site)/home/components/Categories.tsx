@@ -7,7 +7,7 @@ import Loading from '@/components/Loading';
 import { useSession } from 'next-auth/react';
 
 const Categories = () => {
-  const [categories, setCategories] = useState<Record<any, any>[]>([]);
+  const [categories, setCategories] = useState<SpotifyApi.CategoryObject[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const spotifyApi = useSpotify();
@@ -31,7 +31,6 @@ const Categories = () => {
   return (
     <div className='flex flex-col gap-4 h-full'>
       {!isLoading ? (
-        //@ts-ignore
         categories.map((data) => <Category data={data} key={data?.id} />)
       ) : (
         <Loading />

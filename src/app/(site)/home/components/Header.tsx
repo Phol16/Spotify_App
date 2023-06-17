@@ -15,10 +15,6 @@ import useSpotify from '@/hooks/useSpotify';
 import Image from 'next/image';
 import PlayTrack from './PlayTrack';
 
-interface HeaderProps {
-  children: ReactNode;
-}
-
 export const colors: string[] = [
   'from-indigo-500',
   'from-blue-500',
@@ -31,9 +27,11 @@ export const colors: string[] = [
   'from-orange-500',
 ];
 
-const Header = ({ children }: HeaderProps) => {
+const Header = () => {
   const [color, setColor] = useState('');
-  const [artistDetail, setArtistDetail] = useState<{} | null>(null);
+  const [artistDetail, setArtistDetail] = useState<
+    SpotifyApi.SingleArtistResponse | SpotifyApi.SinglePlaylistResponse | null
+  >(null);
 
   const spotifyApi = useSpotify();
   const pathname = usePathname();
@@ -53,9 +51,12 @@ const Header = ({ children }: HeaderProps) => {
       dispatch(storefollowedArtist(null));
     } else {
       if (artist) {
-        musicList = ''
+        musicList = '';
         spotifyApi.getArtist(artist).then((data) => {
-          if (pathname === `/home/artist/${artist}` || pathname === `/home/artist/${artist}/album`) {
+          if (
+            pathname === `/home/artist/${artist}` ||
+            pathname === `/home/artist/${artist}/album`
+          ) {
             setArtistDetail(data.body);
           } else {
             setArtistDetail(null);
@@ -63,7 +64,7 @@ const Header = ({ children }: HeaderProps) => {
         });
       }
       if (musicList) {
-        artist = ''
+        artist = '';
         spotifyApi.getPlaylist(musicList).then((data) => {
           if (pathname === '/home/music') {
             setArtistDetail(data.body);
@@ -110,7 +111,6 @@ const Header = ({ children }: HeaderProps) => {
         {artistDetail ? (
           <div className='flex items-center gap-x-3'>
             <Image
-              //@ts-ignore
               src={artistDetail?.images?.[0].url}
               alt='Artist Image'
               width={130}
@@ -118,15 +118,12 @@ const Header = ({ children }: HeaderProps) => {
               className='max-h-[130px] object-cover object-center rounded-lg'
             />
             <section className='flex flex-col gap-2'>
-              {/*@ts-ignore*/}
               <h1 className='text-4xl'>{artistDetail?.name}</h1>
               <div className='px-2'>
                 <p className='text-xs text-neutral-400'>
-                  {/*@ts-ignore*/}
                   {artistDetail?.type[0].toUpperCase() + artistDetail.type.substring(1)}
                 </p>
                 <p className='text-sm text-neutral-400'>
-                  {/*@ts-ignore*/}
                   Followers: {artistDetail?.followers.total}
                 </p>
               </div>

@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { storefollowedArtist } from '@/libs/store/slice/followedArtistSlice';
 
 const ArtistLibrary = () => {
-  const [followedArtist, setfollowedArtist] = useState<Record<any, any>[]>([]);
+  const [followedArtist, setfollowedArtist] = useState<SpotifyApi.ArtistObjectFull[]>([]);
 
   const { data: session, status } = useSession();
   const spotifyApi = useSpotify();
@@ -19,7 +19,6 @@ const ArtistLibrary = () => {
   useEffect(() => {
     if (spotifyApi.getAccessToken()) {
       spotifyApi.getFollowedArtists().then((data) => {
-        //@ts-ignore
         setfollowedArtist(data.body.artists.items);
       });
     }

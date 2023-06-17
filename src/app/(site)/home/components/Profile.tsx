@@ -36,7 +36,7 @@ const Profile = () => {
         icon: BiSearch,
         label: 'Search',
         active: pathname === '/search',
-        href: '/search',
+        href: '/home',
       },
     ],
     [pathname]

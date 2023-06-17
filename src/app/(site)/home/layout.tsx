@@ -9,7 +9,7 @@ export default function HomeLayout({ children }: { children: React.ReactNode }) 
       </section>
       <section className='flex-[5] overflow-y-auto pb-2 mt-4 px-2'>
         <div className='bg-zinc-700 bg-opacity-20 rounded-lg h-full overflow-hidden overflow-y-auto'>
-          <Header>Header</Header>
+          <Header />
           {children}
         </div>
       </section>

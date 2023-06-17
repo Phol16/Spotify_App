@@ -8,15 +8,10 @@ import { useDispatch } from 'react-redux';
 import { storedashboardTrack } from '@/libs/store/slice/dashboardTrackSlice';
 import { useRouter } from 'next/navigation';
 
-interface CategoryProps {
-  href: string;
-  icons: Record<any, string>;
-  id: string;
-  name: string;
-}
 export const CategoryItem = ({ id }: { id: string }) => {
-  const [categoryPlaylist, setCategoryPLaylist] = useState<Record<any, any>[]>();
-  const [hidden, setHidden] = useState(null);
+  const [categoryPlaylist, setCategoryPLaylist] =
+    useState<SpotifyApi.PlaylistObjectSimplified[]>();
+  const [hidden, setHidden] = useState<null | number>(null);
   const router = useRouter();
 
   const spotifyApi = useSpotify();
@@ -38,13 +33,12 @@ export const CategoryItem = ({ id }: { id: string }) => {
       {categoryPlaylist &&
         categoryPlaylist.map((data, index) => (
           <div
-            key={data.id + index}
+            key={data?.id + index}
             onClick={() => {
               dispatch(storedashboardTrack(data.id));
               router.push('/home/music');
             }}
             onMouseOver={() => {
-              //@ts-ignore
               setHidden(index);
             }}
             onMouseOut={() => {
@@ -70,8 +64,8 @@ export const CategoryItem = ({ id }: { id: string }) => {
               </div>
             </div>
             <section className='flex flex-col gap-2'>
-              <h1 className='text-sm'>{data.name}</h1>
-              <p className='text-xs text-neutral-400 max-w-sm'>{data.description}</p>
+              <h1 className='text-sm'>{data?.name}</h1>
+              <p className='text-xs text-neutral-400 max-w-sm'>{data?.description}</p>
             </section>
           </div>
         ))}
@@ -79,7 +73,7 @@ export const CategoryItem = ({ id }: { id: string }) => {
   );
 };
 
-const Category = ({ data }: { data: CategoryProps }) => {
+const Category = ({ data }: { data: SpotifyApi.CategoryObject }) => {
   return (
     <div>
       <h1 className='text-xl font-semibold'>{data.name}</h1>

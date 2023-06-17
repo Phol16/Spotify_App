@@ -13,7 +13,7 @@ import PreviewTrack from './components/PreviewTrack';
 import Album from './components/Album';
 
 const ArtistDetails = () => {
-  const [topTracks, setTopTracks] = useState<Record<any,any>[]>([]);
+  const [topTracks, setTopTracks] = useState<SpotifyApi.TrackObjectFull[]>([]);
 
   const pathname = usePathname();
   const spotifyApi = useSpotify();
@@ -24,7 +24,6 @@ const ArtistDetails = () => {
   useEffect(() => {
     if (artist) {
       spotifyApi.getArtistTopTracks(artist, 'ES').then((data) => {
-        //@ts-ignore
         setTopTracks(data.body.tracks);
       });
     }
