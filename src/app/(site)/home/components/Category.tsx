@@ -31,44 +31,46 @@ export const CategoryItem = ({ id }: { id: string }) => {
   return (
     <div className='flex gap-2 overflow-x-auto scrollbar-hide '>
       {categoryPlaylist &&
-        categoryPlaylist.map((data, index) => (
-          <div
-            key={data?.id + index}
-            onClick={() => {
-              dispatch(storedashboardTrack(data.id));
-              router.push('/home/music');
-            }}
-            onMouseOver={() => {
-              setHidden(index);
-            }}
-            onMouseOut={() => {
-              setHidden(null);
-            }}
-            className='bg-neutral-500 bg-opacity-10 flex flex-col gap-1 items-center p-5 rounded-lg w-fit hover:bg-neutral-700 cursor-pointer'
-          >
-            <div className='w-[200px] h-[200px] bg-white relative'>
-              <Image
-                src={data?.images?.[0]?.url}
-                alt='Photo'
-                width={200}
-                height={0}
-                className='w-full h-full object-cover'
-              />
-              <div
-                className={clsx(
-                  'absolute bottom-2 right-2 w-[40px] h-[40px] bg-green-500 rounded-full flex justify-center items-center',
-                  hidden !== index && 'hidden'
-                )}
-              >
-                <FaPlay className='text-black relative ' />
+        categoryPlaylist.map((data, index) => {
+          return data ? (
+            <div
+              key={data?.id + index}
+              onClick={() => {
+                dispatch(storedashboardTrack(data.id));
+                router.push('/home/music');
+              }}
+              onMouseOver={() => {
+                setHidden(index);
+              }}
+              onMouseOut={() => {
+                setHidden(null);
+              }}
+              className='bg-neutral-500 bg-opacity-10 flex flex-col gap-1 items-center p-5 rounded-lg w-fit hover:bg-neutral-700 cursor-pointer'
+            >
+              <div className='w-[200px] h-[200px] bg-white relative'>
+                <Image
+                  src={data?.images?.[0]?.url}
+                  alt='Photo'
+                  width={200}
+                  height={0}
+                  className='w-full h-full object-cover'
+                />
+                <div
+                  className={clsx(
+                    'absolute bottom-2 right-2 w-[40px] h-[40px] bg-green-500 rounded-full flex justify-center items-center',
+                    hidden !== index && 'hidden'
+                  )}
+                >
+                  <FaPlay className='text-black relative ' />
+                </div>
               </div>
+              <section className='flex flex-col gap-2'>
+                <h1 className='text-sm'>{data?.name}</h1>
+                <p className='text-xs text-neutral-400 max-w-sm'>{data?.description}</p>
+              </section>
             </div>
-            <section className='flex flex-col gap-2'>
-              <h1 className='text-sm'>{data?.name}</h1>
-              <p className='text-xs text-neutral-400 max-w-sm'>{data?.description}</p>
-            </section>
-          </div>
-        ))}
+          ) : null;
+        })}
     </div>
   );
 };
